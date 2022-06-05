@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Registration = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [cpassword, setCpassword] = useState("");
-  const handleRegistration = (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
     // console.log(name, email, password, cpassword);
     if (name == "") {
@@ -22,7 +23,13 @@ const Registration = () => {
     } else if (password != cpassword) {
       toast.error("Password not matched_try again!");
     } else {
-      navigate("/");
+      let data = await axios.post("http://localhost:8000/registration", {
+        name: name,
+        email: email,
+        password: password,
+      });
+      toast.success(data);
+      // navigate("/");
     }
   };
   return (
